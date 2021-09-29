@@ -1,7 +1,12 @@
 <template>
   <div class="q-pa-md row items-start q-gutter-md justify-center">
-    <div v-for="store in stores" :key="store.code">
-      <q-card class="bg-purple text-white cursor-pointer" flat bordered @click="openStore(store)">
+    <div v-for="store in stores" :key="store.code" class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
+      <q-card
+        class="bg-purple text-white cursor-pointer row items-center justify-center"
+        flat
+        bordered
+        @click="openStore(store)"
+      >
         <q-card-section horizontal>
           <q-card-section>
             <div class="text-subtitle2">{{ store.name }}</div>
@@ -33,7 +38,8 @@ export default defineComponent({
       this.$dialog.error('Something went wrong');
       return;
     }
-    this.stores.push(...response.data);
+    this.$store.commit('main/saveStores', response.data);
+    this.stores.push(...this.$store.getters['main/stores']);
   },
   methods: {
     openStore (store) {
