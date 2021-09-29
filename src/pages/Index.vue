@@ -1,17 +1,39 @@
 <template>
-  <q-page class="flex flex-center">
-    <img
-      alt="Quasar logo"
-      src="~assets/quasar-logo-vertical.svg"
-      style="width: 200px; height: 200px"
-    >
-  </q-page>
+  <div class="q-pa-md row items-start q-gutter-md justify-center">
+    <div v-for="store in stores" :key="store.code">
+      <q-card class="bg-purple text-white" flat bordered>
+        <q-card-section horizontal>
+          <q-card-section>
+            <div class="text-subtitle2">{{ store.name }}</div>
+          </q-card-section>
+        </q-card-section>
+      </q-card>
+    </div>
+  </div>
 </template>
 
 <script>
 import { defineComponent } from 'vue';
 
 export default defineComponent({
-  name: 'PageIndex'
+  name: 'PageIndex',
+  data() {
+    return {
+      stores: []
+    }
+  },
+  async mounted() {
+    const response = await this.$axios.get(process.env.API_BASE_URL + '/api/service', {
+      params: {
+        Request: 'Stores',
+        Language: 'en-us'
+      }
+    });
+    if (response.status !== 200) {
+      this.$dialog.error('Something went wrong');
+      return;
+    }
+    this.stores.push(...response.data);
+  }
 })
 </script>
