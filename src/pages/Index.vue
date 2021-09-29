@@ -1,7 +1,7 @@
 <template>
   <div class="q-pa-md row items-start q-gutter-md justify-center">
     <div v-for="store in stores" :key="store.code">
-      <q-card class="bg-purple text-white" flat bordered>
+      <q-card class="bg-purple text-white cursor-pointer" flat bordered @click="openStore(store)">
         <q-card-section horizontal>
           <q-card-section>
             <div class="text-subtitle2">{{ store.name }}</div>
@@ -34,6 +34,11 @@ export default defineComponent({
       return;
     }
     this.stores.push(...response.data);
+  },
+  methods: {
+    openStore (store) {
+      this.$dialog.storeDialog(store)
+    }
   }
 })
 </script>
